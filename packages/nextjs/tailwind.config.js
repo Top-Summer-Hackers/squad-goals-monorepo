@@ -92,6 +92,7 @@ module.exports = {
     extend: {
       fontFamily: {
         "bai-jamjuree": ["Bai Jamjuree", "sans-serif"],
+        "source-sans-pro": ["Source Sans Pro", "sans-serif"],
       },
       keyframes: {
         grow: {
@@ -111,6 +112,9 @@ module.exports = {
         grow: "grow 5s linear infinite",
         "pulse-fast": "pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         zoom: "zoom 1s ease infinite",
+      },
+      colors: {
+        "landing-bg-main": "#8A9EA0",
       },
     },
   },

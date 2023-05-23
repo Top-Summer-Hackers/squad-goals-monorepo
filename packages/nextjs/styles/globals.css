@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300;400;600;700&display=swap');
+
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
@@ -29,4 +31,16 @@ p {
 
 .btn.btn-ghost {
   @apply shadow-none;
+}
+
+.flex-center {
+  @apply flex items-center justify-center
+}
+
+.bg-landing-box1 {
+  background: linear-gradient(90deg, #99B0B0 0%, #B5B2B0 38%, #FCFAF0 100%);
+}
+
+.bg-landing-box-2 {
+  background: linear-gradient(90deg, #B5B2B0 0%, #FCFAF0 65%);
 }

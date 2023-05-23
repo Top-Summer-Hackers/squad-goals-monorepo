@@ -1,3 +1,18 @@
+> **Warning**
+<br />
+```console
+  The ethereumjs-abi package seems having problem (https://github.com/PaulRBerg/hardhat-template/issues/113)
+  2. Open git bash
+  3. Clone the repo
+  4. Cd into the repo
+  5. yarn cache clean --all
+  6. YARN_CHECKSUM_BEHAVIOR=update yarn
+  7. yarn start
+```
+
+Routes available: <br />
+
+
 # 🏗 Scaffold-ETH 2
 
 🧪 An open-source, up-to-date toolkit for building decentralized applications (dapps) on the Ethereum blockchain. It's designed to make it easier for developers to create and deploy smart contracts and build user interfaces that interact with those contracts.
