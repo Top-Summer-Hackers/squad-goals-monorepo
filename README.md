@@ -1,7 +1,6 @@
-> **Warning**
-<br />
+# Quick start
 ```
-  The ethereumjs-abi package seems having problem (https://github.com/PaulRBerg/hardhat-template/issues/113)
+ The ethereumjs-abi package seems having problem (https://github.com/PaulRBerg/hardhat-template/issues/113)
   2. Open git bash
   3. Clone the repo
   4. Cd into the repo
@@ -9,8 +8,10 @@
   6. YARN_CHECKSUM_BEHAVIOR=update yarn
   7. yarn start
 ```
+
 <br/>
-Routes available: <br />
+Routes available: 
+<br />
 
 
 # 🏗 Scaffold-ETH 2
