@@ -813,6 +813,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@headlessui/react@npm:^1.7.14":
+  version: 1.7.14
+  resolution: "@headlessui/react@npm:1.7.14"
+  dependencies:
+    client-only: ^0.0.1
+  peerDependencies:
+    react: ^16 || ^17 || ^18
+    react-dom: ^16 || ^17 || ^18
+  checksum: 9122114d7a618877a8da2ada000422ce82e6af47195e414076fa5cf45687709479eb30b0df414eed52079be6e5904151bc92e4acfafbdde2592c608f015c490e
+  languageName: node
+  linkType: hard
+
 "@heroicons/react@npm:^2.0.11":
   version: 2.0.11
   resolution: "@heroicons/react@npm:2.0.11"
@@ -1812,6 +1824,7 @@ __metadata:
   dependencies:
     "@ethersproject/networks": ^5.7.1
     "@ethersproject/web": ^5.7.1
+    "@headlessui/react": ^1.7.14
     "@heroicons/react": ^2.0.11
     "@rainbow-me/rainbowkit": ^0.11.0
     "@trivago/prettier-plugin-sort-imports": ^4.1.1
@@ -1840,6 +1853,7 @@ __metadata:
     react-hot-toast: ^2.4.0
     react-icons: ^4.8.0
     react-modern-drawer: ^1.2.0
+    tailwind-scrollbar: ^3.0.4
     tailwindcss: ^3.1.8
     typescript: ^4.9.5
     use-debounce: ^8.0.4
@@ -5061,7 +5075,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"client-only@npm:0.0.1":
+"client-only@npm:0.0.1, client-only@npm:^0.0.1":
   version: 0.0.1
   resolution: "client-only@npm:0.0.1"
   checksum: 0c16bf660dadb90610553c1d8946a7fdfb81d624adea073b8440b7d795d5b5b08beb3c950c6a2cf16279365a3265158a236876d92bce16423c485c322d7dfaf8
@@ -12569,6 +12583,15 @@ __metadata:
     string-width: ^4.2.3
     strip-ansi: ^6.0.1
   checksum: 5b07fe462ee03d2e1fac02cbb578efd2e0b55ac07e3d3db2e950aa9570ade5a4a2b8d3c15e9f25c89e4e50b646bc4269934601ee1eef4ca7968ad31960977690
+  languageName: node
+  linkType: hard
+
+"tailwind-scrollbar@npm:^3.0.4":
+  version: 3.0.4
+  resolution: "tailwind-scrollbar@npm:3.0.4"
+  peerDependencies:
+    tailwindcss: 3.x
+  checksum: e708baef1ec640e7bef11338e05951f0074fb7cc680255fa33c8a24b5b545121fbf87b5f36fca069128117d578285a714699aa6e39a54a346e6c67fd42571f43
   languageName: node
   linkType: hard
 

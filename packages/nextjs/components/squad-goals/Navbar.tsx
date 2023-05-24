@@ -1,9 +1,15 @@
 import React, { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
 
 const Navbar = () => {
+  const router = useRouter();
+
+  const { pathname } = router;
+  console.log(pathname);
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDrawer = () => {
@@ -13,17 +19,20 @@ const Navbar = () => {
   return (
     <div className="max-w-[1980px] mx-auto p-3 flex justify-between items-center">
       {/* logo */}
-      <div>
+      <Link href={"/"}>
         <img src="/logo.png" alt="squad goals logo" className="h-10" />
-      </div>
+      </Link>
       {/* navigation  */}
       <div className="hidden lg:flex items-center gap-5">
-        <div className="cursor-pointer flex-center">
+        <Link
+          href={"/app"}
+          className={`${pathname === "/app" ? "border-b-2 border-black" : ""} cursor-pointer flex-center`}
+        >
           <div>app</div>
           <div>
             <img src="/app.png" alt="" className="w-10" />
           </div>
-        </div>
+        </Link>
         <div className="cursor-pointer flex-center">
           <div>challenges</div>
           <div>
