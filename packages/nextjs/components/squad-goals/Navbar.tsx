@@ -1,17 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
+import truncateEthAddress from "truncate-eth-address";
+import { useAccount } from "wagmi";
 
 const Navbar = () => {
   const router = useRouter();
-
   const { pathname } = router;
-  console.log(pathname);
+  const { isConnected: isWalletConnected, address } = useAccount();
+
   const [isOpen, setIsOpen] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
+
+  useEffect(() => {
+    setIsConnected(isWalletConnected);
+  }, [isWalletConnected]);
 
   const toggleDrawer = () => {
     setIsOpen(prevState => !prevState);
@@ -52,13 +59,24 @@ const Navbar = () => {
           </div>
         </Link>
 
-        <div className="cursor-pointer flex-center">
-          {/* <div>dashboard</div>
+        {isConnected ? (
+          <Link
+            href={"/dashboard"}
+            className={`${pathname === "/dashboard" ? "border-b-2 border-black" : ""} cursor-pointer flex-center`}
+          >
+            {" "}
+            <div className="cursor-pointer flex-center">
+              <div>{truncateEthAddress(address || "")}</div>
+              <div>
+                <img src="/dashboard.png" alt="" className="w-10" />
+              </div>
+            </div>
+          </Link>
+        ) : (
           <div>
-            <img src="/dashboard.png" alt="" className="w-10" />
-          </div> */}
-          <ConnectButton />
-        </div>
+            <ConnectButton />
+          </div>
+        )}
       </div>
 
       {/* drawer for mobile */}
@@ -84,9 +102,13 @@ const Navbar = () => {
         <GiHamburgerMenu />
       </div>
 
-      <div className="z-[100] fixed bottom-2 right-2 block lg:hidden">
-        <ConnectButton />
-      </div>
+      {isConnected ? (
+        <div className="z-[100] fixed bottom-2 right-2 block">
+          <ConnectButton />
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

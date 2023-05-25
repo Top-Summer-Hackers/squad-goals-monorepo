@@ -8,9 +8,14 @@
   6. YARN_CHECKSUM_BEHAVIOR=update yarn
   7. yarn start
 ```
-
+❗For testing purposes, the target network was configured as polygon mumbai❗ <br />
 <br/>
 Routes available: 
+/ => landing page <br />
+/app => view ongoing challenges, leaderboard <br />
+/challenge/:id => view specific challenge <br />
+/launch => launch new challenge <br />
+/dashboard => profile <br />
 <br />
 
 

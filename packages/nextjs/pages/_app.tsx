@@ -4,7 +4,7 @@ import { RainbowKitProvider, darkTheme, lightTheme } from "@rainbow-me/rainbowki
 import "@rainbow-me/rainbowkit/styles.css";
 import NextNProgress from "nextjs-progressbar";
 import { Toaster } from "react-hot-toast";
-import { useDarkMode } from "usehooks-ts";
+// import { useDarkMode } from "usehooks-ts";
 import { WagmiConfig } from "wagmi";
 import { Footer } from "~~/components/Footer";
 import { Header } from "~~/components/Header";
@@ -21,7 +21,7 @@ const ScaffoldEthApp = ({ Component, pageProps, router }: AppProps) => {
   const setNativeCurrencyPrice = useGlobalState(state => state.setNativeCurrencyPrice);
   // This variable is required for initial client side rendering of correct theme for RainbowKit
   const [isDarkTheme, setIsDarkTheme] = useState(true);
-  const { isDarkMode } = useDarkMode();
+  // const { isDarkMode } = useDarkMode();
 
   useEffect(() => {
     if (price > 0) {
@@ -29,9 +29,13 @@ const ScaffoldEthApp = ({ Component, pageProps, router }: AppProps) => {
     }
   }, [setNativeCurrencyPrice, price]);
 
+  // useEffect(() => {
+  //   setIsDarkTheme(isDarkMode);
+  // }, [isDarkMode]);
+
   useEffect(() => {
-    setIsDarkTheme(isDarkMode);
-  }, [isDarkMode]);
+    setIsDarkTheme(true);
+  }, []);
 
   const isDebugPages = router.pathname === "/debug" || router.pathname === "/example-ui";
 

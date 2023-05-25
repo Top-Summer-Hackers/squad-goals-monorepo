@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { NextPage } from "next";
 import { FiChevronRight } from "react-icons/fi";
 
@@ -16,17 +17,21 @@ const Home: NextPage = () => {
             </div>
             {/* go to app and launch button */}
             <div className="mt-5 flex-center gap-5">
-              <div className="group cursor-pointer h-10 w-fit flex-center bg-white rounded-full px-5 py-1">
-                go to app <FiChevronRight className="group-hover:translate-x-1 transition mt-0.5" />
-              </div>
-              <div className="group cursor-pointer h-10 gap-2 w-fit flex-center bg-white rounded-full px-5 py-1">
-                launch{" "}
-                <img
-                  src="launch.png"
-                  alt=""
-                  className="h-7 group-hover:translate-x-1 group-hover:-translate-y-1 transition mt-0.5"
-                />
-              </div>
+              <Link href={"/app"}>
+                <div className="group cursor-pointer h-10 w-fit flex-center bg-white rounded-full px-5 py-1">
+                  go to app <FiChevronRight className="group-hover:translate-x-1 transition mt-0.5" />
+                </div>
+              </Link>
+              <Link href={"/launch"}>
+                <div className="group cursor-pointer h-10 gap-2 w-fit flex-center bg-white rounded-full px-5 py-1">
+                  launch{" "}
+                  <img
+                    src="launch.png"
+                    alt=""
+                    className="h-7 group-hover:translate-x-1 group-hover:-translate-y-1 transition mt-0.5"
+                  />
+                </div>
+              </Link>
             </div>
           </div>
           <div className="flex-center">
