@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { BigNumber, ethers } from "ethers";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 
 const Launch = () => {
   const [previewImgURL, setPreviewImgURL] = useState("");
@@ -10,7 +12,38 @@ const Launch = () => {
     duration: 0,
     stake: 0,
     tags: "",
+    maxStakers: 0,
   });
+
+  const { writeAsync: createChallenge, isLoading: createChallengeLoading } = useScaffoldContractWrite({
+    contractName: "SquadGoals",
+    functionName: "createChallenge",
+    args: [
+      ethers.utils.parseEther(newChallengeDetails.stake.toString()) as unknown as BigNumber,
+      newChallengeDetails.maxStakers as unknown as BigNumber,
+      newChallengeDetails.duration as unknown as BigNumber,
+      newChallengeDetails.name,
+      newChallengeDetails.description,
+      previewImgURL,
+    ],
+    onSuccess: async data => {
+      const { transactionHash } = await data.wait();
+      console.log(transactionHash);
+      setTimeout(() => {
+        toast.success("Transaction Success!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      }, 100);
+    },
+  });
+
   // handle image change
   function handleImageUploadChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files != null) {
@@ -37,10 +70,12 @@ const Launch = () => {
       newChallengeDetails.description.trim() === "" ||
       newChallengeDetails.duration <= 0 ||
       newChallengeDetails.stake <= 0 ||
-      newChallengeDetails.tags.trim() === ""
+      newChallengeDetails.tags.trim() === "" ||
+      newChallengeDetails.maxStakers <= 0 ||
+      previewImgURL === ""
     ) {
       setTimeout(() => {
-        toast.error("Invalid input!", {
+        toast.error("Please fill in all the fields!", {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -52,7 +87,7 @@ const Launch = () => {
         });
       }, 100);
     } else {
-      console.log("Success");
+      createChallenge();
     }
   }
 
@@ -123,7 +158,20 @@ const Launch = () => {
                   type="text"
                   id="stake"
                   className="outline outline-1 rounded-full px-3 py-0.5"
-                  placeholder="how long the challenge is open in days"
+                  placeholder="Required deposit to participate, e.g. 0.05 ETH"
+                />
+              </div>
+              {/* max number of stakers */}
+              <div className="flex flex-col">
+                <label htmlFor="duration" className="mb-2">
+                  Maximum Number of Stakers
+                </label>
+                <input
+                  onChange={handleChange}
+                  type="text"
+                  id="maxStakers"
+                  className="outline outline-1 rounded-full px-3 py-0.5"
+                  placeholder="how many stakers can stake in the challenge"
                 />
               </div>
               {/* Tags */}
@@ -136,7 +184,7 @@ const Launch = () => {
                   type="text"
                   id="tags"
                   className="outline outline-1 rounded-full px-3 py-0.5"
-                  placeholder="how long the challenge is open in days"
+                  placeholder="study, fitness, leetcode, running, weight lifting"
                 />
               </div>
             </div>
@@ -173,7 +221,7 @@ const Launch = () => {
             onClick={handleLaunch}
             className="text-lg cursor-pointer my-10 w-fit mx-auto bg-[#B5B2B0] px-14 py-1 rounded-xl"
           >
-            launch
+            {createChallengeLoading ? "Loading..." : "launch"}
           </div>
         </div>
       </div>
