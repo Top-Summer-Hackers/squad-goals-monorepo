@@ -26,30 +26,83 @@ const App = () => {
           <div className="z-[-100] fixed bottom-0 left-0 w-full h-[50vh] bg-[#EEEEEE]"></div>
         </div>
         {/* open challenges title */}
-        <h3 className="text-3xl">Open Challenges</h3>
-        {/* search + category */}
-        <div className="grid grid-cols-2 mt-5">
-          {/* search */}
-          <div className="w-[80%]">
-            <Search />
+        <div>
+          {" "}
+          <h3 className="text-3xl">Open Challenges</h3>
+          {/* search + category */}
+          <div className="grid grid-cols-2 mt-5">
+            {/* search */}
+            <div className="w-[80%]">
+              <Search />
+            </div>
+            {/* category */}
+            <div className="w-[80%]">
+              <SelectCategory />
+            </div>
           </div>
-          {/* category */}
-          <div className="w-[80%]">
-            <SelectCategory />
+          <div className="px-2 py-3 mb-10 mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 max-h-[600px] overflow-y-auto scrollbar-thin scrollbar-thumb-[#999999] scrollbar-track-[#C9C9C9]">
+            <ChallengeCard />
+            <ChallengeCard />
+            <ChallengeCard />
+            <ChallengeCard />
+            <ChallengeCard />
+            <ChallengeCard />
+            <ChallengeCard />
+            <ChallengeCard />
+            <ChallengeCard />
+            <ChallengeCard />
+            <ChallengeCard />
           </div>
         </div>
-        <div className="px-2 py-3 mb-10 mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 max-h-[600px] overflow-y-auto scrollbar-thin scrollbar-thumb-[#999999] scrollbar-track-[#C9C9C9]">
-          <ChallengeCard />
-          <ChallengeCard />
-          <ChallengeCard />
-          <ChallengeCard />
-          <ChallengeCard />
-          <ChallengeCard />
-          <ChallengeCard />
-          <ChallengeCard />
-          <ChallengeCard />
-          <ChallengeCard />
-          <ChallengeCard />
+
+        {/* start a new challenge title */}
+        <div>
+          {" "}
+          <h3 className="text-3xl">Start a new Challenge</h3>
+          {/* search + category */}
+          <div className="grid grid-cols-2 mt-5">
+            {/* search */}
+            <div className="w-[80%]">
+              <Search />
+            </div>
+            {/* category */}
+            <div className="w-[80%]">
+              <SelectCategory />
+            </div>
+          </div>
+          <div className="px-2 py-3 mb-10 mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 max-h-[600px] overflow-y-auto scrollbar-thin scrollbar-thumb-[#999999] scrollbar-track-[#C9C9C9]">
+            <ChallengeCard />
+            <ChallengeCard />
+            <ChallengeCard />
+            <ChallengeCard />
+            <ChallengeCard />
+            <ChallengeCard />
+            <ChallengeCard />
+            <ChallengeCard />
+            <ChallengeCard />
+            <ChallengeCard />
+            <ChallengeCard />
+          </div>
+        </div>
+
+        {/* leaderboard */}
+        <div className="mb-10">
+          {" "}
+          <h3 className="text-3xl">Leaderboard</h3>
+          <div className="flex flex-col gap-3">
+            <div className="bg-[#BBD4FA] rounded-full px-6 py-0.5 w-full flex justify-between items-center app-box-shadow">
+              <div className="font-semibold">0x3rwdf4twesf...234rf</div>
+              <div>34</div>
+            </div>
+            <div className="bg-[#BBD4FA] rounded-full px-6 py-0.5 w-full flex justify-between items-center app-box-shadow">
+              <div className="font-semibold">0x3rwdf4twesf...234rf</div>
+              <div>34</div>
+            </div>
+            <div className="bg-[#BBD4FA] rounded-full px-6 py-0.5 w-full flex justify-between items-center app-box-shadow">
+              <div className="font-semibold">0x3rwdf4twesf...234rf</div>
+              <div>34</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

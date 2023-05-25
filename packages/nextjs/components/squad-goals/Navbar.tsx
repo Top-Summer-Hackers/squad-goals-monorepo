@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Drawer from "react-modern-drawer";
 import "react-modern-drawer/dist/index.css";
@@ -39,17 +40,24 @@ const Navbar = () => {
             <img src="/challenge.png" alt="" className="w-10" />
           </div>
         </div>
-        <div className="cursor-pointer flex-center">
-          <div>launch</div>
-          <div>
-            <img src="/launch.png" alt="" className="w-10" />
+        <Link
+          href={"/launch"}
+          className={`${pathname === "/launch" ? "border-b-2 border-black" : ""} cursor-pointer flex-center`}
+        >
+          <div className="cursor-pointer flex-center">
+            <div>launch</div>
+            <div>
+              <img src="/launch.png" alt="" className="w-10" />
+            </div>
           </div>
-        </div>
+        </Link>
+
         <div className="cursor-pointer flex-center">
-          <div>dashboard</div>
+          {/* <div>dashboard</div>
           <div>
             <img src="/dashboard.png" alt="" className="w-10" />
-          </div>
+          </div> */}
+          <ConnectButton />
         </div>
       </div>
 
@@ -74,6 +82,10 @@ const Navbar = () => {
       {/* drawer */}
       <div onClick={toggleDrawer} className="block lg:hidden cursor-pointer text-2xl">
         <GiHamburgerMenu />
+      </div>
+
+      <div className="z-[100] fixed bottom-2 right-2 block lg:hidden">
+        <ConnectButton />
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 const ChallengeCard = () => {
   return (
@@ -22,7 +23,9 @@ const ChallengeCard = () => {
           {/* join and detail */}
           <div className="mt-1 flex items-center gap-3 text-sm">
             <div className="rounded-full bg-[#FFB1AC] px-3 py-0.5 cursor-pointer app-box-shadow">join</div>
-            <div className="rounded-full bg-[#D1D1D1] px-3 py-0.5 cursor-pointer app-box-shadow">details</div>
+            <Link href={"/challenge/1"}>
+              <div className="rounded-full bg-[#D1D1D1] px-3 py-0.5 cursor-pointer app-box-shadow">details</div>
+            </Link>
           </div>
         </div>
       </div>
