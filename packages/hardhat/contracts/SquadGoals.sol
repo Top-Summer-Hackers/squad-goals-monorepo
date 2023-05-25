@@ -39,6 +39,7 @@ contract SquadGoals {
 
   mapping(uint256 => address) public challengeCopys;
   mapping(address => address) public challengeCopyNFT;
+  mapping(uint256 => address[]) public copiesOfChallengeId;
 
   uint256 public challengeCount = 1;
   uint256 public copyCount = 1;
@@ -87,6 +88,7 @@ contract SquadGoals {
     challengeCopyNFT[address(proxy)] = _rewardNFT;
     RewardNFT(_rewardNFT).setAuthorizedMinter(address(proxy));
     challengeCopys[copyCount] = address(proxy);
+    copiesOfChallengeId[_challengeId].push(address(proxy));
     copyCount++;
   }
 
@@ -133,14 +135,12 @@ contract SquadGoals {
     }
   }
 
-  function getAllChallenges() external view returns (ChallengeReturnData[] memory openChallenges) {
-    openChallenges = new ChallengeReturnData[](challengeCount + copyCount - 2);
-
-    uint256 k;
+  function getChallenges() public view returns (ChallengeReturnData[] memory openChallenges) {
+    openChallenges = new ChallengeReturnData[](challengeCount - 1);
 
     for (uint256 i = 1; i < challengeCount; i++) {
       address challenge = challenges[i];
-      openChallenges[k] = ChallengeReturnData(
+      openChallenges[i - 1] = ChallengeReturnData(
         challenge,
         challengeNFT[challenge],
         IChallenge(challenge).stakeAmount(),
@@ -152,12 +152,15 @@ contract SquadGoals {
         IChallenge(challenge).completed(),
         IChallenge(challenge).onVoting()
       );
-      k++;
     }
+  }
 
-    for (uint256 j = 1; j < copyCount; j++) {
-      address challenge = challengeCopys[j];
-      openChallenges[k] = ChallengeReturnData(
+  function getChallengeCopies() public view returns (ChallengeReturnData[] memory openChallenges) {
+    openChallenges = new ChallengeReturnData[](copyCount - 1);
+
+    for (uint256 i = 1; i < copyCount; i++) {
+      address challenge = challengeCopys[i];
+      openChallenges[i - 1] = ChallengeReturnData(
         challenge,
         challengeCopyNFT[challenge],
         IChallenge(challenge).stakeAmount(),
@@ -169,8 +172,19 @@ contract SquadGoals {
         IChallenge(challenge).completed(),
         IChallenge(challenge).onVoting()
       );
-      k++;
     }
+  }
+
+  function getCopiesOfChallenge(uint256 _challengeId) external view returns (address[] memory) {
+    return copiesOfChallengeId[_challengeId];
+  }
+
+  function getAllChallenges()
+    external
+    view
+    returns (ChallengeReturnData[] memory openChallenges, ChallengeReturnData[] memory openChallengeCopies)
+  {
+    return (getChallenges(), getChallengeCopies());
   }
 
   receive() external payable {}

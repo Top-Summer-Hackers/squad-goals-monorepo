@@ -533,6 +533,30 @@ const contracts = {
               type: "function",
             },
             {
+              inputs: [
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              name: "copiesOfChallengeId",
+              outputs: [
+                {
+                  internalType: "address",
+                  name: "",
+                  type: "address",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
               inputs: [],
               name: "copyCount",
               outputs: [
@@ -679,6 +703,85 @@ const contracts = {
                   name: "openChallenges",
                   type: "tuple[]",
                 },
+                {
+                  components: [
+                    {
+                      internalType: "address",
+                      name: "challenge",
+                      type: "address",
+                    },
+                    {
+                      internalType: "address",
+                      name: "NFT",
+                      type: "address",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "stakeAmount",
+                      type: "uint256",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "maxAmountOfStakers",
+                      type: "uint256",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "deadline",
+                      type: "uint256",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "stakerCount",
+                      type: "uint256",
+                    },
+                    {
+                      components: [
+                        {
+                          internalType: "address",
+                          name: "stakerAddr",
+                          type: "address",
+                        },
+                        {
+                          internalType: "bytes32",
+                          name: "stakerName",
+                          type: "bytes32",
+                        },
+                        {
+                          internalType: "uint256",
+                          name: "upVotes",
+                          type: "uint256",
+                        },
+                        {
+                          internalType: "uint256",
+                          name: "downVotes",
+                          type: "uint256",
+                        },
+                      ],
+                      internalType: "struct IChallenge.Staker[]",
+                      name: "stakers",
+                      type: "tuple[]",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "votedCount",
+                      type: "uint256",
+                    },
+                    {
+                      internalType: "bool",
+                      name: "completed",
+                      type: "bool",
+                    },
+                    {
+                      internalType: "bool",
+                      name: "onVoting",
+                      type: "bool",
+                    },
+                  ],
+                  internalType: "struct SquadGoals.ChallengeReturnData[]",
+                  name: "openChallengeCopies",
+                  type: "tuple[]",
+                },
               ],
               stateMutability: "view",
               type: "function",
@@ -708,6 +811,93 @@ const contracts = {
               type: "function",
             },
             {
+              inputs: [],
+              name: "getChallengeCopies",
+              outputs: [
+                {
+                  components: [
+                    {
+                      internalType: "address",
+                      name: "challenge",
+                      type: "address",
+                    },
+                    {
+                      internalType: "address",
+                      name: "NFT",
+                      type: "address",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "stakeAmount",
+                      type: "uint256",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "maxAmountOfStakers",
+                      type: "uint256",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "deadline",
+                      type: "uint256",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "stakerCount",
+                      type: "uint256",
+                    },
+                    {
+                      components: [
+                        {
+                          internalType: "address",
+                          name: "stakerAddr",
+                          type: "address",
+                        },
+                        {
+                          internalType: "bytes32",
+                          name: "stakerName",
+                          type: "bytes32",
+                        },
+                        {
+                          internalType: "uint256",
+                          name: "upVotes",
+                          type: "uint256",
+                        },
+                        {
+                          internalType: "uint256",
+                          name: "downVotes",
+                          type: "uint256",
+                        },
+                      ],
+                      internalType: "struct IChallenge.Staker[]",
+                      name: "stakers",
+                      type: "tuple[]",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "votedCount",
+                      type: "uint256",
+                    },
+                    {
+                      internalType: "bool",
+                      name: "completed",
+                      type: "bool",
+                    },
+                    {
+                      internalType: "bool",
+                      name: "onVoting",
+                      type: "bool",
+                    },
+                  ],
+                  internalType: "struct SquadGoals.ChallengeReturnData[]",
+                  name: "openChallenges",
+                  type: "tuple[]",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
               inputs: [
                 {
                   internalType: "uint256",
@@ -726,6 +916,112 @@ const contracts = {
                   internalType: "address",
                   name: "",
                   type: "address",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [],
+              name: "getChallenges",
+              outputs: [
+                {
+                  components: [
+                    {
+                      internalType: "address",
+                      name: "challenge",
+                      type: "address",
+                    },
+                    {
+                      internalType: "address",
+                      name: "NFT",
+                      type: "address",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "stakeAmount",
+                      type: "uint256",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "maxAmountOfStakers",
+                      type: "uint256",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "deadline",
+                      type: "uint256",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "stakerCount",
+                      type: "uint256",
+                    },
+                    {
+                      components: [
+                        {
+                          internalType: "address",
+                          name: "stakerAddr",
+                          type: "address",
+                        },
+                        {
+                          internalType: "bytes32",
+                          name: "stakerName",
+                          type: "bytes32",
+                        },
+                        {
+                          internalType: "uint256",
+                          name: "upVotes",
+                          type: "uint256",
+                        },
+                        {
+                          internalType: "uint256",
+                          name: "downVotes",
+                          type: "uint256",
+                        },
+                      ],
+                      internalType: "struct IChallenge.Staker[]",
+                      name: "stakers",
+                      type: "tuple[]",
+                    },
+                    {
+                      internalType: "uint256",
+                      name: "votedCount",
+                      type: "uint256",
+                    },
+                    {
+                      internalType: "bool",
+                      name: "completed",
+                      type: "bool",
+                    },
+                    {
+                      internalType: "bool",
+                      name: "onVoting",
+                      type: "bool",
+                    },
+                  ],
+                  internalType: "struct SquadGoals.ChallengeReturnData[]",
+                  name: "openChallenges",
+                  type: "tuple[]",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+            {
+              inputs: [
+                {
+                  internalType: "uint256",
+                  name: "_challengeId",
+                  type: "uint256",
+                },
+              ],
+              name: "getCopiesOfChallenge",
+              outputs: [
+                {
+                  internalType: "address[]",
+                  name: "",
+                  type: "address[]",
                 },
               ],
               stateMutability: "view",
