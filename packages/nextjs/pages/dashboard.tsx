@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
-import { ChallengeCard } from "~~/components/squad-goals/app";
-import { RewardNFTCard } from "~~/components/squad-goals/dashboard";
+
+// import { ChallengeCard } from "~~/components/squad-goals/app";
+// import { RewardNFTCard } from "~~/components/squad-goals/dashboard";
 
 const Dashboard = () => {
   const { isConnected: isWalletConnected, address } = useAccount();
@@ -93,6 +94,7 @@ const Dashboard = () => {
             <div className="font-semibold text-2xl">Reward NFTs Collected:</div>
             {/* NFTs */}
             <div className="px-2 py-3 mb-10 mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 max-h-[600px] overflow-y-auto scrollbar-thin scrollbar-thumb-[#999999] scrollbar-track-[#C9C9C9]">
+              {/* <RewardNFTCard />
               <RewardNFTCard />
               <RewardNFTCard />
               <RewardNFTCard />
@@ -101,8 +103,7 @@ const Dashboard = () => {
               <RewardNFTCard />
               <RewardNFTCard />
               <RewardNFTCard />
-              <RewardNFTCard />
-              <RewardNFTCard />
+              <RewardNFTCard /> */}
             </div>
           </div>
 
@@ -111,6 +112,7 @@ const Dashboard = () => {
             <div className="font-semibold text-lg">Challenges In Progress:</div>
             {/* NFTs */}
             <div className="px-2 py-3 mb-10 mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 max-h-[350px] overflow-y-auto scrollbar-thin scrollbar-thumb-[#999999] scrollbar-track-[#C9C9C9]">
+              {/* <ChallengeCard />
               <ChallengeCard />
               <ChallengeCard />
               <ChallengeCard />
@@ -118,8 +120,7 @@ const Dashboard = () => {
               <ChallengeCard />
               <ChallengeCard />
               <ChallengeCard />
-              <ChallengeCard />
-              <ChallengeCard />
+              <ChallengeCard /> */}
             </div>
           </div>
 
@@ -128,6 +129,7 @@ const Dashboard = () => {
             <div className="font-semibold text-lg">Completed Challenges:</div>
             {/* NFTs */}
             <div className="px-2 py-3 mb-10 mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 max-h-[350px] overflow-y-auto scrollbar-thin scrollbar-thumb-[#999999] scrollbar-track-[#C9C9C9]">
+              {/* <ChallengeCard />
               <ChallengeCard />
               <ChallengeCard />
               <ChallengeCard />
@@ -135,8 +137,7 @@ const Dashboard = () => {
               <ChallengeCard />
               <ChallengeCard />
               <ChallengeCard />
-              <ChallengeCard />
-              <ChallengeCard />
+              <ChallengeCard /> */}
             </div>
           </div>
         </div>

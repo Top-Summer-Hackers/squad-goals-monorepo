@@ -1,22 +1,64 @@
 import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Launch = () => {
   const [previewImgURL, setPreviewImgURL] = useState("");
-  // const [uploadImgFile, setUploadImgFile] = useState<File>();
-
+  const [newChallengeDetails, setNewChallengeDetails] = useState({
+    name: "",
+    description: "",
+    duration: 0,
+    stake: 0,
+    tags: "",
+  });
   // handle image change
   function handleImageUploadChange(e: React.ChangeEvent<HTMLInputElement>) {
     if (e.target.files != null) {
       const file = e.target.files[0];
-      // setUploadImgFile(file);
       if (file != null && file != undefined) {
         setPreviewImgURL(URL.createObjectURL(file));
       }
     }
   }
 
+  // handle input field change event
+  function handleChange(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) {
+    setNewChallengeDetails(prev => ({
+      ...prev,
+      [e.target.id]: e.target.value,
+    }));
+  }
+
+  // handle launch button clicked
+  function handleLaunch() {
+    // error handling
+    if (
+      newChallengeDetails.name.trim() === "" ||
+      newChallengeDetails.description.trim() === "" ||
+      newChallengeDetails.duration <= 0 ||
+      newChallengeDetails.stake <= 0 ||
+      newChallengeDetails.tags.trim() === ""
+    ) {
+      setTimeout(() => {
+        toast.error("Invalid input!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+      }, 100);
+    } else {
+      console.log("Success");
+    }
+  }
+
   return (
     <div className="relative max-w-[1980px] mx-auto w-[80%]">
+      <ToastContainer />
       <div className="z-[-100] w-full fixed left-0 right-0">
         <img src="/bgvector.png" alt="" className="w-full h-full" />
       </div>
@@ -35,6 +77,7 @@ const Launch = () => {
                   Name
                 </label>
                 <input
+                  onChange={handleChange}
                   type="text"
                   id="name"
                   className="outline outline-1 rounded-full px-3 py-0.5"
@@ -47,6 +90,7 @@ const Launch = () => {
                   Description
                 </label>
                 <textarea
+                  onChange={handleChange}
                   id="description"
                   rows={8}
                   className="outline outline-1 rounded-xl px-3 py-0.5"
@@ -62,6 +106,7 @@ const Launch = () => {
                   Duration
                 </label>
                 <input
+                  onChange={handleChange}
                   type="text"
                   id="duration"
                   className="outline outline-1 rounded-full px-3 py-0.5"
@@ -74,8 +119,9 @@ const Launch = () => {
                   ETH Stake
                 </label>
                 <input
+                  onChange={handleChange}
                   type="text"
-                  id="duration"
+                  id="stake"
                   className="outline outline-1 rounded-full px-3 py-0.5"
                   placeholder="how long the challenge is open in days"
                 />
@@ -86,8 +132,9 @@ const Launch = () => {
                   Tags
                 </label>
                 <input
+                  onChange={handleChange}
                   type="text"
-                  id="duration"
+                  id="tags"
                   className="outline outline-1 rounded-full px-3 py-0.5"
                   placeholder="how long the challenge is open in days"
                 />
@@ -111,12 +158,23 @@ const Launch = () => {
                     </div>
                   )}
                 </div>
-                <input onChange={handleImageUploadChange} id="dropzone-file" type="file" className="hidden" />
+                <input
+                  onChange={handleImageUploadChange}
+                  id="dropzone-file"
+                  type="file"
+                  className="hidden"
+                  name="pic"
+                />
               </label>
             </div>
           </div>
           {/* launch */}
-          <div className="text-lg cursor-pointer my-10 w-fit mx-auto bg-[#B5B2B0] px-14 py-1 rounded-xl">launch</div>
+          <div
+            onClick={handleLaunch}
+            className="text-lg cursor-pointer my-10 w-fit mx-auto bg-[#B5B2B0] px-14 py-1 rounded-xl"
+          >
+            launch
+          </div>
         </div>
       </div>
     </div>
