@@ -37,7 +37,7 @@ const ScaffoldEthApp = ({ Component, pageProps, router }: AppProps) => {
     setIsDarkTheme(true);
   }, []);
 
-  const isDebugPages = router.pathname === "/debug" || router.pathname === "/example-ui";
+  const isDebugPages = router.pathname === "/debug";
 
   return (
     <WagmiConfig client={wagmiClient}>

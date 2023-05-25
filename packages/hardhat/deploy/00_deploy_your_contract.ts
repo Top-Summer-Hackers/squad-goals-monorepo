@@ -21,18 +21,55 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
   const { deployer } = await hre.getNamedAccounts();
   const { deploy } = hre.deployments;
 
-  await deploy("YourContract", {
+  const dChallengeImplementation = await deploy("ChallengeImplementation", {
     from: deployer,
-    // Contract constructor arguments
-    args: [deployer],
+    args: [],
     log: true,
-    // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
-    // automatically mining the contract deployment transaction. There is no effect on live networks.
     autoMine: true,
   });
 
-  // Get the deployed contract
-  // const yourContract = await hre.ethers.getContract("YourContract", deployer);
+  // const cChallengeImplementation = await hre.ethers.getContract("ChallengeImplementation");
+
+  await deploy("SquadGoals", {
+    from: deployer,
+    args: [deployer, dChallengeImplementation.address],
+    log: true,
+    autoMine: true,
+  });
+
+  // CREATE SAMPLE CHALLENGE 1
+
+  const cSquadGoals = await hre.ethers.getContract("SquadGoals");
+  // 2592000 = 30 days
+  let tx = await cSquadGoals.createChallenge(
+    hre.ethers.utils.parseEther("0.001"),
+    7,
+    2592000,
+    "Test Challenge 1",
+    "TEST1",
+    "www.google.com",
+  );
+  await tx.wait();
+
+  // CREATE SAMPLE CHALLENGE 2
+
+  tx = await cSquadGoals.createChallenge(
+    hre.ethers.utils.parseEther("0.01"),
+    5,
+    1592000,
+    "Test Challenge 2",
+    "TEST2",
+    "www.google.com",
+  );
+  await tx.wait();
+
+  // CREATE MOCK FROM CHALLENGE 1
+  tx = await cSquadGoals.createChallengeCopy(1);
+  await tx.wait();
+
+  // CREATE MOCK FROM CHALLENGE 2
+  tx = await cSquadGoals.createChallengeCopy(2);
+  await tx.wait();
 };
 
 export default deployYourContract;
