@@ -43,11 +43,15 @@ const ChallengeCard = ({ challenge, isOriginal, challengeId }: ChallengeCardProp
           {/* stake amount + joining number */}
           <div className="mt-2 grid grid-cols-2 text-sm">
             <div className="font-semibold">
-              stake: {challenge != undefined ? ethers.utils.formatEther(challenge.stakeAmount || "").toString() : 0} ETH
+              stake:{" "}
+              {challenge != undefined
+                ? ethers.utils.formatEther(challenge?.stakeAmount != null ? challenge?.stakeAmount : "0")
+                : 0}{" "}
+              ETH
             </div>
             <div>
-              {challenge != undefined ? challenge.stakerCount.toString() : 0}/
-              {challenge != undefined ? challenge.maxAmountOfStakers.toString() : 0} spots filled
+              {challenge != undefined ? challenge?.stakerCount?.toString() : 0}/
+              {challenge != undefined ? challenge?.maxAmountOfStakers?.toString() : 0} spots filled
             </div>
           </div>
           {/* join and detail */}

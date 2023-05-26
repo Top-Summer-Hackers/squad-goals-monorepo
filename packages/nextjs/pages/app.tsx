@@ -4,16 +4,20 @@ import { ChallengeCard, Search, SelectCategory } from "~~/components/squad-goals
 import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
 
 const App = () => {
-  const { data: allChallenges, isLoading: isAllChallengesLoading } = useScaffoldContractRead({
+  const { data: challengesCopies, isLoading: isAllChallengesCopiesLoading } = useScaffoldContractRead({
     contractName: "SquadGoals",
-    functionName: "getAllChallenges",
+    functionName: "getChallengeCopies",
+  });
+  const { data: challenges, isLoading: isAllChallengesLoading } = useScaffoldContractRead({
+    contractName: "SquadGoals",
+    functionName: "getChallenges",
   });
   const { data: challengeCount, isLoading: isChallengeCountLoading } = useScaffoldContractRead({
     contractName: "SquadGoals",
     functionName: "challengeCount",
   });
-
-  console.log(allChallenges);
+  console.log(challenges);
+  console.log(challengeCount);
   return (
     <div className="max-w-[1980px] mx-auto w-[80%]">
       <div className="w-full">
@@ -52,34 +56,20 @@ const App = () => {
               <SelectCategory />
             </div>
           </div>
-          {isAllChallengesLoading || isChallengeCountLoading ? (
+          {isAllChallengesLoading || isChallengeCountLoading || isAllChallengesCopiesLoading ? (
             <div className="flex-center mx-auto mt-10">
               <Loading />
             </div>
           ) : (
             <div className="px-2 py-3 mb-10 mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 max-h-[600px] overflow-y-auto scrollbar-thin scrollbar-thumb-[#999999] scrollbar-track-[#C9C9C9]">
-              {allChallenges?.map((challenge, index) => {
-                if (index < parseInt(challengeCount?.toString() || "") - 1) {
-                  // original
-                  return (
-                    <ChallengeCard
-                      challengeId={index + 1}
-                      isOriginal={true}
-                      challenge={challenge}
-                      key={parseInt(challenge.deadline.toString()) + index}
-                    />
-                  );
-                } else {
-                  // cloned
-                  return (
-                    <ChallengeCard
-                      challengeId={index + 1}
-                      isOriginal={false}
-                      challenge={challenge}
-                      key={parseInt(challenge.deadline.toString()) + index}
-                    />
-                  );
-                }
+              {challenges?.map((challenge, index) => {
+                // original
+                return <ChallengeCard challengeId={index + 1} isOriginal={true} challenge={challenge} key={index} />;
+              })}
+
+              {challengesCopies?.map((challenge, index) => {
+                // cloned
+                return <ChallengeCard challengeId={index + 1} isOriginal={false} challenge={challenge} key={index} />;
               })}
             </div>
           )}

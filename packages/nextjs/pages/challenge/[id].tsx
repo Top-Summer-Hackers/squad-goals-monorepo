@@ -36,9 +36,18 @@ const ChallengeDetail = () => {
   // get the challenge address and nft address
   const { data: challenge, isSuccess: readChallengeDataSuccess } = useScaffoldContractRead({
     contractName: "SquadGoals",
-    functionName: "getChallenge",
+    functionName: "getCopiesOfChallenge",
     args: [id as unknown as BigNumber],
   });
+
+  // get the challenge copies
+  const { data: challengeCopies, isSuccess: readChallengeCopiesSuccess } = useScaffoldContractRead({
+    contractName: "SquadGoals",
+    functionName: "getCopiesOfChallenge",
+    args: [id as unknown as BigNumber],
+  });
+  console.log(challengeCopies);
+  console.log(readChallengeCopiesSuccess);
 
   const { writeAsync: createCopy, isLoading: createCopyLoading } = useScaffoldContractWrite({
     contractName: "SquadGoals",
@@ -47,7 +56,7 @@ const ChallengeDetail = () => {
     // The number of block confirmations to wait for before considering transaction to be confirmed (default : 1).
     // The callback function to execute when the transaction is confirmed.
 
-    onSuccess: async data => {
+    onSuccess: async (data: any) => {
       const { transactionHash } = await data.wait();
       console.log(transactionHash);
       setTimeout(() => {
@@ -93,10 +102,18 @@ const ChallengeDetail = () => {
     }
   }
 
+  async function generateContract() {
+    challengeCopies?.map(challengeAddr => {
+      const contract = new ethers.Contract(challengeAddr, ChallengeImplementation, signer || provider);
+      console.log(contract);
+    });
+  }
+
   console.log(challengeDetail);
 
   useEffect(() => {
     getChallengeDetail();
+    generateContract();
   }, [challenge]);
 
   // create a copy of this challenge
