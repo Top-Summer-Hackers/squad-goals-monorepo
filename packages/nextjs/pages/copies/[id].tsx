@@ -166,6 +166,49 @@ const ChallengeCopyDetail = () => {
                 </div>
               </div>
             </div>
+            {/* squad participants */}
+            <div className="mt-10 w-full">
+              <table className="w-full">
+                <thead>
+                  <tr>
+                    <th>squad participants: </th>
+                    <th>completed challenge yes / no</th>
+                    <th>yes / no</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>0x7b86F576669f8d20a8244dABEFc65b31d7dEB3f2</th>
+                    <th>3 / 3</th>
+                    <th className="flex-center gap-5 border-none mt-1">
+                      <div className="flex items-center">
+                        <input
+                          id="default-radio-1"
+                          type="radio"
+                          value=""
+                          name="default-radio"
+                          className="w-4 h-4 text-black bg-gray-100 border-gray-300"
+                        />
+                      </div>
+                      <div className="flex items-center">
+                        <input
+                          checked
+                          id="default-radio-2"
+                          type="radio"
+                          value=""
+                          name="default-radio"
+                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
+                        />
+                      </div>
+                    </th>
+                  </tr>
+                </tbody>
+              </table>
+              {/* verify button */}
+              <div className="mt-5 flex justify-end">
+                <button className="bg-[#FFB1AC] rounded-full px-3 py-0.5 app-box-shadow">Verify</button>
+              </div>
+            </div>
           </div>
         </div>
       )}

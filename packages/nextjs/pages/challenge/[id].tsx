@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ChallengeImplementation } from "../../constants/abi.json";
-import { RewardNFT } from "../../constants/abi.json";
+import { RewardNFT, SquadGoals } from "../../constants/abi.json";
 import { BigNumber, ethers } from "ethers";
 import moment from "moment";
 import { toast } from "react-hot-toast";
 import * as wagmi from "wagmi";
 import { Loading, PopUp, PreviewChallengeCard } from "~~/components/squad-goals";
-import { useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
+import { useDeployedContractInfo, useScaffoldContractRead, useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 
 const ChallengeDetail = () => {
   const router = useRouter();
@@ -49,6 +49,9 @@ const ChallengeDetail = () => {
     image: "",
     name: "",
   });
+  const [copiesChallengeMetadata, setCopiesChallengeMetadata] = useState<
+    { name: string; description: string; image: string }[]
+  >([]);
 
   // get the challenge address and nft address
   const {
@@ -76,7 +79,11 @@ const ChallengeDetail = () => {
   });
 
   // get the challenge copies
-  const { data: challengeCopies, isLoading: challengeCopiesLoading } = useScaffoldContractRead({
+  const {
+    data: challengeCopies,
+    isLoading: challengeCopiesLoading,
+    status: challengeCopiesStatus,
+  } = useScaffoldContractRead({
     contractName: "SquadGoals",
     functionName: "getCopiesOfChallenge",
     args: [id as unknown as BigNumber],
@@ -92,20 +99,10 @@ const ChallengeDetail = () => {
     onSuccess: async (data: any) => {
       const { transactionHash } = await data.wait();
       console.log(transactionHash);
-      // setTimeout(() => {
-      //   toast.success("Transaction Success!", {
-      //     position: "top-right",
-      //     autoClose: 5000,
-      //     hideProgressBar: false,
-      //     closeOnClick: true,
-      //     pauseOnHover: true,
-      //     draggable: true,
-      //     progress: undefined,
-      //     theme: "dark",
-      //   });
-      // }, 100);
     },
   });
+
+  const { data: deployedSquadGoalContract } = useDeployedContractInfo("SquadGoals");
 
   // create a proxy contract instance
   const challengeProxyContract = wagmi.useContract({
@@ -150,6 +147,7 @@ const ChallengeDetail = () => {
       stakerCount: string;
       isCompleted: string;
     }[] = [];
+    const copiesTokenURIs: { name: string; description: string; image: string }[] = [];
     challengeCopies?.map(async challengeAddr => {
       const contract = new ethers.Contract(challengeAddr, ChallengeImplementation, signer || provider);
       const stakeAmount = await contract?.stakeAmount();
@@ -162,6 +160,24 @@ const ChallengeDetail = () => {
       const stakerCount = String(await contract?.stakerCount()).toString();
       const isCompleted = String(await contract?.completed()).toString();
 
+      const squadGoalContract = new ethers.Contract(
+        deployedSquadGoalContract?.address || "",
+        SquadGoals,
+        signer || provider,
+      );
+      const nftAddress = await squadGoalContract?.challengeCopyNFT(challengeAddr);
+      const rewardNftContract = new ethers.Contract(nftAddress, RewardNFT, signer || provider);
+      const tokenURI = await rewardNftContract?.tokenURI(1);
+      const metadataURL = "https://ipfs.io/ipfs/" + tokenURI.replace("ipfs://", "");
+
+      await fetch(metadataURL)
+        .then(response => response.json())
+        .then(data =>
+          copiesTokenURIs.push({
+            ...data,
+            image: "https://ipfs.io/ipfs/" + data.image.replace("ipfs://", ""),
+          }),
+        );
       contracts.push({
         addr: challengeAddr,
         stakeAmount: stakeAmountStr ?? "",
@@ -170,6 +186,7 @@ const ChallengeDetail = () => {
         isCompleted,
       });
     });
+    setCopiesChallengeMetadata(copiesTokenURIs);
     setCopyChallenges(contracts);
     setIsGeneratingCopiesContractLoading(false);
   }
@@ -180,7 +197,7 @@ const ChallengeDetail = () => {
 
   useEffect(() => {
     generateContract();
-  }, [challenge, isGeneratingCopiesContractLoading]);
+  }, [challengeCopiesStatus]);
 
   // create a copy of this challenge
   function handleCreateCopy() {
@@ -264,6 +281,50 @@ const ChallengeDetail = () => {
               </div>
             ) : (
               <div>
+                {/* squad participants */}
+                <div className="mt-10 w-full">
+                  <table className="w-full">
+                    <thead>
+                      <tr>
+                        <th>squad participants: </th>
+                        <th>completed challenge yes / no</th>
+                        <th>yes / no</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th>0x7b86F576669f8d20a8244dABEFc65b31d7dEB3f2</th>
+                        <th>3 / 3</th>
+                        <th className="flex-center gap-5 border-none mt-1">
+                          <div className="flex items-center">
+                            <input
+                              id="default-radio-1"
+                              type="radio"
+                              value=""
+                              name="default-radio"
+                              className="w-4 h-4 text-black bg-gray-100 border-gray-300"
+                            />
+                          </div>
+                          <div className="flex items-center">
+                            <input
+                              checked
+                              id="default-radio-2"
+                              type="radio"
+                              value=""
+                              name="default-radio"
+                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
+                            />
+                          </div>
+                        </th>
+                      </tr>
+                    </tbody>
+                  </table>
+                  {/* verify button */}
+                  <div className="mt-5 flex justify-end">
+                    <button className="bg-[#FFB1AC] rounded-full px-3 py-0.5 app-box-shadow">Verify</button>
+                  </div>
+                </div>
+
                 {/* Open Challenges */}
                 <div className="mt-5">
                   <div className="text-lg">Open Challenges</div>
@@ -274,6 +335,7 @@ const ChallengeDetail = () => {
                       {copyChallenges.map((challenge, index) =>
                         challenge.isCompleted == "false" ? (
                           <PreviewChallengeCard
+                            metadata={copiesChallengeMetadata[index]}
                             key={challenge.addr + index}
                             addr={challenge.addr}
                             maxAmountOfStakers={challenge.maxAmountOfStakers}
@@ -289,9 +351,10 @@ const ChallengeDetail = () => {
                 <div className="my-5">
                   <div className="text-lg">Completed Challenges</div>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                    {copyChallenges.map(challenge =>
+                    {copyChallenges.map((challenge, index) =>
                       challenge.isCompleted == "true" ? (
                         <PreviewChallengeCard
+                          metadata={copiesChallengeMetadata[index]}
                           key={challenge.addr}
                           addr={challenge.addr}
                           maxAmountOfStakers={challenge.maxAmountOfStakers}
