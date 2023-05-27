@@ -77,6 +77,10 @@ const config: HardhatUserConfig = {
       url: `https://polygon-mumbai.g.alchemy.com/v2/${providerApiKey}`,
       accounts: [deployerPrivateKey],
     },
+    gnosisTestnet: {
+      url: `https://rpc.chiadochain.net`,
+      accounts: [deployerPrivateKey],
+    },
   },
   verify: {
     etherscan: {
