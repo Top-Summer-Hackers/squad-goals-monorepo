@@ -49,7 +49,7 @@ const ChallengeCard = ({ metadata, challenge, isOriginal, challengeId }: Challen
               {challenge != undefined
                 ? Number(
                     ethers.utils.formatEther(challenge?.stakeAmount != null ? challenge?.stakeAmount : "0"),
-                  ).toFixed(2)
+                  ).toFixed(3)
                 : 0}{" "}
               ETH
             </div>
