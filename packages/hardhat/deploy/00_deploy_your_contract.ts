@@ -47,7 +47,7 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
     2592000,
     "Test Challenge 1",
     "TEST1",
-    "www.google.com",
+    "ipfs://bafyreihstlkwjjb63mt54e5juerm3d5zvcnyimkhxvesqp2aden5ytqyuy/metadata.json",
   );
   await tx.wait();
 
@@ -59,7 +59,7 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
     1592000,
     "Test Challenge 2",
     "TEST2",
-    "www.google.com",
+    "ipfs://bafyreihstlkwjjb63mt54e5juerm3d5zvcnyimkhxvesqp2aden5ytqyuy/metadata.json",
   );
   await tx.wait();
 
