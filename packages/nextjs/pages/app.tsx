@@ -1,23 +1,67 @@
-import React from "react";
+import React, { useState } from "react";
+import { RewardNFT } from "../constants/abi.json";
+import { ethers } from "ethers";
+import * as wagmi from "wagmi";
 import Loading from "~~/components/squad-goals/Loading";
-import { ChallengeCard, Search, SelectCategory } from "~~/components/squad-goals/app";
+import { ChallengeCard, Search } from "~~/components/squad-goals/app";
 import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
 
 const App = () => {
+  const { data: signer } = wagmi.useSigner();
+  const provider = wagmi.useProvider();
+
+  const [originalMetadata, setOriginalMetadata] = useState<{ name: string; description: string; image: string }[]>([]);
+  const [copiesMetadata, setCopiesMetadata] = useState<{ name: string; description: string; image: string }[]>([]);
+
   const { data: challengesCopies, isLoading: isAllChallengesCopiesLoading } = useScaffoldContractRead({
     contractName: "SquadGoals",
     functionName: "getChallengeCopies",
+    onSuccess: async challengesData => {
+      const copiesTokenURIs: { name: string; description: string; image: string }[] = [];
+      for (const challenge of challengesData as any) {
+        const contract = new ethers.Contract(challenge.NFT, RewardNFT, signer || provider);
+        const tokenURI = await contract?.tokenURI(1);
+        const metadataURL = "https://ipfs.io/ipfs/" + tokenURI.replace("ipfs://", "");
+        console.log(metadataURL);
+        await fetch(metadataURL)
+          .then(response => response.json())
+          .then(data =>
+            copiesTokenURIs.push({
+              ...data,
+              image: "https://ipfs.io/ipfs/" + data.image.replace("ipfs://", ""),
+            }),
+          );
+      }
+      setCopiesMetadata(copiesTokenURIs);
+    },
   });
   const { data: challenges, isLoading: isAllChallengesLoading } = useScaffoldContractRead({
     contractName: "SquadGoals",
     functionName: "getChallenges",
+    onSuccess: async challengesData => {
+      const originalTokenURIs: { name: string; description: string; image: string }[] = [];
+      for (const challenge of challengesData as any) {
+        const contract = new ethers.Contract(challenge.NFT, RewardNFT, signer || provider);
+        const tokenURI = await contract?.tokenURI(1);
+        const metadataURL = "https://ipfs.io/ipfs/" + tokenURI.replace("ipfs://", "");
+        console.log(metadataURL);
+        await fetch(metadataURL)
+          .then(response => response.json())
+          .then(data =>
+            originalTokenURIs.push({
+              ...data,
+              image: "https://ipfs.io/ipfs/" + data.image.replace("ipfs://", ""),
+            }),
+          );
+      }
+      setOriginalMetadata(originalTokenURIs);
+    },
   });
-  const { data: challengeCount, isLoading: isChallengeCountLoading } = useScaffoldContractRead({
+  const { /*data: challengeCount,*/ isLoading: isChallengeCountLoading } = useScaffoldContractRead({
     contractName: "SquadGoals",
     functionName: "challengeCount",
   });
-  console.log(challenges);
-  console.log(challengeCount);
+
   return (
     <div className="max-w-[1980px] mx-auto w-[80%]">
       <div className="w-full">
@@ -52,9 +96,9 @@ const App = () => {
               <Search />
             </div>
             {/* category */}
-            <div className="w-[80%]">
+            {/* <div className="w-[80%]">
               <SelectCategory />
-            </div>
+            </div> */}
           </div>
           {isAllChallengesLoading || isChallengeCountLoading || isAllChallengesCopiesLoading ? (
             <div className="flex-center mx-auto mt-10">
@@ -64,45 +108,39 @@ const App = () => {
             <div className="px-2 py-3 mb-10 mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 max-h-[600px] overflow-y-auto scrollbar-thin scrollbar-thumb-[#999999] scrollbar-track-[#C9C9C9]">
               {challenges?.map((challenge, index) => {
                 // original
-                return <ChallengeCard challengeId={index + 1} isOriginal={true} challenge={challenge} key={index} />;
+                if (challenge?.completed == false) {
+                  return (
+                    <ChallengeCard
+                      metadata={originalMetadata[index]}
+                      challengeId={index + 1}
+                      isOriginal={true}
+                      challenge={challenge}
+                      key={index}
+                    />
+                  );
+                } else {
+                  return null;
+                }
               })}
 
               {challengesCopies?.map((challenge, index) => {
                 // cloned
-                return <ChallengeCard challengeId={index + 1} isOriginal={false} challenge={challenge} key={index} />;
+                if (challenge?.completed == false) {
+                  return (
+                    <ChallengeCard
+                      metadata={copiesMetadata[index]}
+                      challengeId={index + 1}
+                      isOriginal={false}
+                      challenge={challenge}
+                      key={index}
+                    />
+                  );
+                } else {
+                  return null;
+                }
               })}
             </div>
           )}
-        </div>
-
-        {/* start a new challenge title */}
-        <div>
-          {" "}
-          <h3 className="text-3xl">Start a new Challenge</h3>
-          {/* search + category */}
-          <div className="grid grid-cols-2 mt-5">
-            {/* search */}
-            <div className="w-[80%]">
-              <Search />
-            </div>
-            {/* category */}
-            <div className="w-[80%]">
-              <SelectCategory />
-            </div>
-          </div>
-          <div className="px-2 py-3 mb-10 mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 max-h-[600px] overflow-y-auto scrollbar-thin scrollbar-thumb-[#999999] scrollbar-track-[#C9C9C9]">
-            {/* <ChallengeCard />
-            <ChallengeCard />
-            <ChallengeCard />
-            <ChallengeCard />
-            <ChallengeCard />
-            <ChallengeCard />
-            <ChallengeCard />
-            <ChallengeCard />
-            <ChallengeCard />
-            <ChallengeCard />
-            <ChallengeCard /> */}
-          </div>
         </div>
 
         {/* leaderboard */}

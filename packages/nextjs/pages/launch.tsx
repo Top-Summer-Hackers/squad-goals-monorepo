@@ -1,11 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BigNumber, ethers } from "ethers";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-hot-toast";
 import "react-toastify/dist/ReactToastify.css";
+import { useAccount } from "wagmi";
 import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
+import uploadToIPFS from "~~/utils/squad-goals/uploadToIPFS";
 
 const Launch = () => {
+  const { address } = useAccount();
+
+  // preview image
   const [previewImgURL, setPreviewImgURL] = useState("");
+  const [uploadFile, setUploadFile] = useState<File | undefined>(undefined);
+  // track input field
   const [newChallengeDetails, setNewChallengeDetails] = useState({
     name: "",
     description: "",
@@ -14,8 +21,13 @@ const Launch = () => {
     tags: "",
     maxStakers: 0,
   });
+  // tracking is uploading and processing transaction
+  const [isLaunching, setIsLaunching] = useState(false);
+  // catch ipfs metadata.json
+  const [ipfsMetadata, setIpfsMetadata] = useState("");
 
-  const { writeAsync: createChallenge, isLoading: createChallengeLoading } = useScaffoldContractWrite({
+  // call create challenge function on SC
+  const { writeAsync: createChallenge /*isLoading: createChallengeLoading*/ } = useScaffoldContractWrite({
     contractName: "SquadGoals",
     functionName: "createChallenge",
     args: [
@@ -24,23 +36,24 @@ const Launch = () => {
       newChallengeDetails.duration as unknown as BigNumber,
       newChallengeDetails.name,
       newChallengeDetails.description,
-      previewImgURL,
+      ipfsMetadata,
     ],
     onSuccess: async data => {
       const { transactionHash } = await data.wait();
       console.log(transactionHash);
-      setTimeout(() => {
-        toast.success("Transaction Success!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
-      }, 100);
+      setIsLaunching(false);
+      setNewChallengeDetails({
+        name: "",
+        description: "",
+        duration: 0,
+        stake: 0,
+        tags: "",
+        maxStakers: 0,
+      });
+      setPreviewImgURL("");
+    },
+    onError: () => {
+      setIsLaunching(false);
     },
   });
 
@@ -50,6 +63,7 @@ const Launch = () => {
       const file = e.target.files[0];
       if (file != null && file != undefined) {
         setPreviewImgURL(URL.createObjectURL(file));
+        setUploadFile(file);
       }
     }
   }
@@ -63,7 +77,7 @@ const Launch = () => {
   }
 
   // handle launch button clicked
-  function handleLaunch() {
+  async function handleLaunch() {
     // error handling
     if (
       newChallengeDetails.name.trim() === "" ||
@@ -74,26 +88,31 @@ const Launch = () => {
       newChallengeDetails.maxStakers <= 0 ||
       previewImgURL === ""
     ) {
-      setTimeout(() => {
-        toast.error("Please fill in all the fields!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
-      }, 100);
+      toast.error("Please enter valid value!");
     } else {
-      createChallenge();
+      if (address === undefined) {
+        toast.error("Please connect wallet!");
+      } else {
+        setIsLaunching(true);
+        const result = await uploadToIPFS(
+          uploadFile as File,
+          newChallengeDetails.name,
+          newChallengeDetails.description,
+        );
+        console.log(result);
+        setIpfsMetadata(result.url);
+      }
     }
   }
 
+  useEffect(() => {
+    if (ipfsMetadata !== "") {
+      createChallenge();
+    }
+  }, [ipfsMetadata]);
+
   return (
     <div className="relative max-w-[1980px] mx-auto w-[80%]">
-      <ToastContainer />
       <div className="z-[-100] w-full fixed left-0 right-0">
         <img src="/bgvector.png" alt="" className="w-full h-full" />
       </div>
@@ -142,7 +161,7 @@ const Launch = () => {
                 </label>
                 <input
                   onChange={handleChange}
-                  type="text"
+                  type="number"
                   id="duration"
                   className="outline outline-1 rounded-full px-3 py-0.5"
                   placeholder="how long the challenge is open in days"
@@ -155,7 +174,7 @@ const Launch = () => {
                 </label>
                 <input
                   onChange={handleChange}
-                  type="text"
+                  type="number"
                   id="stake"
                   className="outline outline-1 rounded-full px-3 py-0.5"
                   placeholder="Required deposit to participate, e.g. 0.05 ETH"
@@ -168,7 +187,7 @@ const Launch = () => {
                 </label>
                 <input
                   onChange={handleChange}
-                  type="text"
+                  type="number"
                   id="maxStakers"
                   className="outline outline-1 rounded-full px-3 py-0.5"
                   placeholder="how many stakers can stake in the challenge"
@@ -221,7 +240,7 @@ const Launch = () => {
             onClick={handleLaunch}
             className="text-lg cursor-pointer my-10 w-fit mx-auto bg-[#B5B2B0] px-14 py-1 rounded-xl"
           >
-            {createChallengeLoading ? "Loading..." : "launch"}
+            {isLaunching ? "Loading..." : "launch"}
           </div>
         </div>
       </div>
