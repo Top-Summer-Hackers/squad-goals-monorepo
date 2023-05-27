@@ -8,6 +8,14 @@ import * as wagmi from "wagmi";
 import { Loading, PopUp } from "~~/components/squad-goals";
 import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
 
+interface Staker {
+  downVotes: BigNumber;
+  stakerAddr: string;
+  stakerName: string;
+  upVotes: BigNumber;
+  [key: string]: BigNumber | string;
+}
+
 const ChallengeCopyDetail = () => {
   const router = useRouter();
 
@@ -54,6 +62,7 @@ const ChallengeCopyDetail = () => {
     onVoting: string;
     stakerCount: string;
     votedCount: string;
+    stakers: Staker[];
   }>({
     stakeAmount: "0",
     deadline: "0",
@@ -61,9 +70,11 @@ const ChallengeCopyDetail = () => {
     onVoting: "false",
     stakerCount: "0",
     votedCount: "0",
+    stakers: [],
   });
   const [isJoinChallengeLoading, setIsJoinChallengeLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
   // create a proxy contract instance
   const challengeProxyContract = wagmi.useContract({
@@ -85,7 +96,8 @@ const ChallengeCopyDetail = () => {
       const onVoting = String(await challengeProxyContract?.onVoting()).toString();
       const stakerCount = String(await challengeProxyContract?.stakerCount()).toString();
       const votedCount = String(await challengeProxyContract?.votedCount()).toString();
-      // const stakers = String(await challengeProxyContract?.getStakers()).split(",");
+      let stakers = await challengeProxyContract?.getStakers();
+      stakers = stakers.filter((staker: any) => staker["stakerAddr"] != address);
 
       setChallengeDetail({
         stakeAmount: stakeAmountStr ?? "",
@@ -94,6 +106,7 @@ const ChallengeCopyDetail = () => {
         onVoting,
         stakerCount,
         votedCount,
+        stakers,
       });
     }
   }
@@ -121,9 +134,39 @@ const ChallengeCopyDetail = () => {
     }
   }
 
+  // verify
+  async function handleVerify() {
+    console.log(selectedValues);
+    console.log(challengeDetail.stakers);
+    const submitVoteParam: string[][] = [];
+    for (let i = 0; i < selectedValues.length; i++) {
+      submitVoteParam.push([challengeDetail.stakers[i]["stakerAddr"], selectedValues[i]]);
+    }
+    console.log(submitVoteParam);
+    if (address != undefined) {
+      try {
+        const result = await challengeProxyContract?.submitVote(submitVoteParam, { gasLimit: 1000000 });
+        await result.wait();
+        toast.success("Transaction success!🎉");
+        getChallengeDetail();
+      } catch (error) {
+        toast.error("Transaction failed");
+      }
+    }
+  }
+
+  const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const { value } = event.target;
+    setSelectedValues(prevSelectedValues => {
+      const updatedValues = [...prevSelectedValues];
+      updatedValues[index] = value;
+      return updatedValues;
+    });
+  };
+
   useEffect(() => {
     getChallengeDetail();
-  }, [challengeCopy]);
+  }, [challengeCopy, address]);
 
   return (
     <div className="relative max-w-[1980px] mx-auto w-[80%]">
@@ -167,48 +210,59 @@ const ChallengeCopyDetail = () => {
               </div>
             </div>
             {/* squad participants */}
-            <div className="mt-10 w-full">
-              <table className="w-full">
-                <thead>
-                  <tr>
-                    <th>squad participants: </th>
-                    <th>completed challenge yes / no</th>
-                    <th>yes / no</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th>0x7b86F576669f8d20a8244dABEFc65b31d7dEB3f2</th>
-                    <th>3 / 3</th>
-                    <th className="flex-center gap-5 border-none mt-1">
-                      <div className="flex items-center">
-                        <input
-                          id="default-radio-1"
-                          type="radio"
-                          value=""
-                          name="default-radio"
-                          className="w-4 h-4 text-black bg-gray-100 border-gray-300"
-                        />
-                      </div>
-                      <div className="flex items-center">
-                        <input
-                          checked
-                          id="default-radio-2"
-                          type="radio"
-                          value=""
-                          name="default-radio"
-                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
-                        />
-                      </div>
-                    </th>
-                  </tr>
-                </tbody>
-              </table>
-              {/* verify button */}
-              <div className="mt-5 flex justify-end">
-                <button className="bg-[#FFB1AC] rounded-full px-3 py-0.5 app-box-shadow">Verify</button>
+            {address == undefined ? (
+              <div className="text-semibold text-center mt-5">Connect wallet to view the squad members</div>
+            ) : (
+              <div className="mt-10 w-full">
+                <table className="w-full">
+                  <thead>
+                    <tr>
+                      <th>squad participants: </th>
+                      <th>completed challenge yes / no</th>
+                      <th>yes / no</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {challengeDetail.stakers.map((staker, index) => (
+                      <tr key={staker["stakerAddr"]}>
+                        <th>{staker["stakerAddr"]}</th>
+                        <th>
+                          {String(staker["upVotes"])} / {String(staker["downVotes"])}
+                        </th>
+                        <th className="flex-center gap-5 border-none mt-1">
+                          <div className="flex items-center">
+                            <input
+                              id={`default-radio-1-${index}`}
+                              type="radio"
+                              value="true"
+                              name={`default-radio-${index}`}
+                              className="w-4 h-4 text-black bg-gray-100 border-gray-300"
+                              onChange={e => handleRadioChange(e, index)}
+                            />
+                          </div>
+                          <div className="flex items-center">
+                            <input
+                              id={`default-radio-2-${index}`}
+                              type="radio"
+                              value="false"
+                              name={`default-radio-${index}`}
+                              className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
+                              onChange={e => handleRadioChange(e, index)}
+                            />
+                          </div>
+                        </th>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {/* verify button */}
+                <div className="mt-5 flex justify-end">
+                  <button onClick={handleVerify} className="bg-[#FFB1AC] rounded-full px-3 py-0.5 app-box-shadow">
+                    Verify
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       )}
