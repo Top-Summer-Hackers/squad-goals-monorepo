@@ -30,7 +30,8 @@ const App = () => {
               ...data,
               image: "https://ipfs.io/ipfs/" + data.image.replace("ipfs://", ""),
             }),
-          );
+          )
+          .catch(err => console.log(err));
       }
       setCopiesMetadata(copiesTokenURIs);
     },
@@ -52,7 +53,8 @@ const App = () => {
               ...data,
               image: "https://ipfs.io/ipfs/" + data.image.replace("ipfs://", ""),
             }),
-          );
+          )
+          .catch(err => console.log(err));
       }
       setOriginalMetadata(originalTokenURIs);
     },

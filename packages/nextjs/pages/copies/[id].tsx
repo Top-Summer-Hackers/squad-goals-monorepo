@@ -46,7 +46,8 @@ const ChallengeCopyDetail = () => {
             ...data,
             image: "https://ipfs.io/ipfs/" + data.image.replace("ipfs://", ""),
           }),
-        );
+        )
+        .catch(err => console.log(err));
     },
   });
 

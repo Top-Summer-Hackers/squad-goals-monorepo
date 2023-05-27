@@ -85,7 +85,8 @@ const ChallengeDetail = () => {
             ...data,
             image: "https://ipfs.io/ipfs/" + data.image.replace("ipfs://", ""),
           }),
-        );
+        )
+        .catch(err => console.log(err));
     },
   });
 
@@ -191,7 +192,8 @@ const ChallengeDetail = () => {
               ...data,
               image: "https://ipfs.io/ipfs/" + data.image.replace("ipfs://", ""),
             }),
-          );
+          )
+          .catch(err => console.log(err));
         contracts.push({
           addr: challengeAddr,
           stakeAmount: stakeAmountStr ?? "",
