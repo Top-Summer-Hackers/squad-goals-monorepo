@@ -12,7 +12,7 @@ const Home: NextPage = () => {
           <div className="flex flex-col justify-center lg:w-[60%] mx-auto">
             {/* upper description */}
             <div className="text-center lg:text-left text-lg font-semibold">
-              a unique blend of blockchain technology, social community, and a game-like system designed to promote
+              A unique blend of blockchain technology, social community, and a game-like system designed to promote
               self-improvement and growth
             </div>
             {/* go to app and launch button */}
@@ -49,8 +49,8 @@ const Home: NextPage = () => {
             <div className="flex gap-2">
               <div className="text-4xl font-semibold">1.</div>
               <div className="text-lg font-semibold">
-                Small groups, or &quot;squads,&quot; of 2-7 people set specific, measurable, achievable, relevant, and
-                time-bound (SMART) goals for themselves
+                Dive into our dynamic &quot;Squads,&quot; intimate groups of 2-7 individuals, each dedicated to setting
+                and pursuing SMART (Specific, Measurable, Achievable, Relevant, Time-bound) goals.
               </div>
             </div>
           </div>
@@ -63,8 +63,8 @@ const Home: NextPage = () => {
             <div className="mt-10 lg:mt-0 flex gap-2">
               <div className="text-4xl font-semibold">2.</div>
               <div className="text-lg font-semibold">
-                Each person has to stake an amount of ETH crypto currency. The crypto is locked in the smart contract
-                until the deadline is reached.
+                Show your commitment by staking a specific amount of xDAI. This cryptocurrency is securely locked in a
+                smart contract, held safely until your goal&apos;s deadline.
               </div>
             </div>
           </div>
@@ -83,8 +83,8 @@ const Home: NextPage = () => {
             <div className="flex gap-2">
               <div className="text-4xl font-semibold">3.</div>
               <div className="text-lg font-semibold">
-                Each of them does their best to achieve the goal. When the deadline is passed, each person has to vouch
-                for each other if they have achieved their goal or not.
+                Strive to achieve your goal before the deadline. The journey towards your goal is a shared experience,
+                with each member doing their utmost to succeed.
               </div>
             </div>
           </div>
@@ -97,8 +97,10 @@ const Home: NextPage = () => {
             <div className="flex gap-2">
               <div className="text-4xl font-semibold">4.</div>
               <div className="text-lg font-semibold">
-                If the majority is achieved they are returned their stake and win the glory of being an owner of the
-                Challange NFT. If not, the stake is lost, 90% to the protocol treasury and 10% to the challenge creator.
+                Upon reaching the deadline, a vote is held. If you&apos;ve achieved your goal and secured a majority of
+                votes, you&apos;ll not only reclaim your staked xDAI but also bask in the glory of becoming an owner of
+                the coveted Challenge NFT. If not, the stake is forfeited, but the experience and lessons learned are
+                yours to keep.
               </div>
             </div>
           </div>
