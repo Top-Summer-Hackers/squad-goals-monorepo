@@ -97,3 +97,9 @@ https://squadgoals.vercel.app
 ### Figma designs
 
 https://www.figma.com/file/MmD6uGCyfhNkYV6oW18CrZ/squad-goals?type=design&node-id=0-1&t=rJ5h8YdvhOz9BYWz-0
+
+
+### Smart Contract Documentation 
+
+https://book-mu-fawn.vercel.app/
+
