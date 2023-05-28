@@ -1,6 +1,13 @@
 # Squad Goals
 
 
+### Smart contracts Repo with Tests:
+https://github.com/Top-Summer-Hackers/squad-goals-contracts
+
+Tests:
+https://github.com/Top-Summer-Hackers/squad-goals-contracts/tree/main/test
+
+
 ## Summary
 
 A crypto protocol that helps you achieve your goals with your squad. Set a goal, find a group of individuals to join your squad, stake some crypto. If you complete your goal, you win a Reward NFT, get your stake back plus the crypto that those that didn't succeed. If you don't complete it, you forfeited your stake and it is divided up by the winners.
@@ -86,3 +93,7 @@ https://squadgoals.vercel.app
 #### user dashboard
 ![User Dashboard](./assets/user-dashboard.png)
 
+
+### Figma designs
+
+https://www.figma.com/file/MmD6uGCyfhNkYV6oW18CrZ/squad-goals?type=design&node-id=0-1&t=rJ5h8YdvhOz9BYWz-0
