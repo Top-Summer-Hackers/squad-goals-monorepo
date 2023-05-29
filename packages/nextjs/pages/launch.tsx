@@ -33,7 +33,7 @@ const Launch = () => {
     args: [
       ethers.utils.parseEther(newChallengeDetails.stake.toString()) as unknown as BigNumber,
       newChallengeDetails.maxStakers as unknown as BigNumber,
-      newChallengeDetails.duration as unknown as BigNumber,
+      (newChallengeDetails.duration * 24 * 60 * 60) as unknown as BigNumber,
       newChallengeDetails.name,
       newChallengeDetails.description,
       ipfsMetadata,
