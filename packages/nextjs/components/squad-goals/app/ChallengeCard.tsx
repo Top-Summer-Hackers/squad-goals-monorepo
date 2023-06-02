@@ -25,6 +25,7 @@ interface ChallengeCardProps {
 }
 
 const ChallengeCard = ({ metadata, challenge, isOriginal, challengeId }: ChallengeCardProps) => {
+  console.log(challenge);
   return (
     <div className="relative app-box-shadow bg-[#BBD4FA] rounded-2xl py-3 px-2">
       <div className="grid grid-cols-5 gap-3">
@@ -68,9 +69,15 @@ const ChallengeCard = ({ metadata, challenge, isOriginal, challengeId }: Challen
         {/* tags */}
         <div className="px-3">
           {parseInt(challenge?.deadline?.toString()) <= Math.floor(Date.now() / 1000) ? (
-            <span className="bg-pink-100 text-pink-800 text-xs font-medium mr-1 px-1 py-0.5 rounded dark:bg-pink-900 dark:text-pink-300">
-              Overdue
-            </span>
+            challenge?.onVoting == true ? (
+              <span className="bg-green-100 text-pink-800 text-xs font-medium mr-1 px-1 py-0.5 rounded dark:bg-pink-900 dark:text-pink-300">
+                voting
+              </span>
+            ) : (
+              <span className="bg-pink-100 text-pink-800 text-xs font-medium mr-1 px-1 py-0.5 rounded dark:bg-pink-900 dark:text-pink-300">
+                Overdue
+              </span>
+            )
           ) : null}
           {isOriginal ? (
             <span className="bg-green-100 text-green-800 font-medium mr-1 px-1 py-0.5 rounded dark:bg-green-900 dark:text-green-300 text-xs">
