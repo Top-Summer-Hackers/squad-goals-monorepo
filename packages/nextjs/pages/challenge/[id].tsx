@@ -343,7 +343,9 @@ const ChallengeDetail = () => {
                       <tbody>
                         {challengeDetail.stakers.map((staker, index) => (
                           <tr key={staker["stakerAddr"]}>
-                            <th>{staker["stakerAddr"]}</th>
+                            <th>{`${staker["stakerAddr"]} - ${ethers.utils.parseBytes32String(
+                              staker["stakerName"],
+                            )}`}</th>
                             <th>
                               {String(staker["upVotes"])} / {String(staker["downVotes"])}
                             </th>
