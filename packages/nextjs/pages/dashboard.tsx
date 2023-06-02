@@ -45,12 +45,12 @@ const Dashboard = () => {
             {/* completed challenges */}
             <div>
               <div className="font-semibold text-3xl text-center">34</div>
-              <div className="font-semibold text-base text-center">Completed challanges</div>
+              <div className="font-semibold text-base text-center">Completed challenges</div>
             </div>
-            {/* ETH staked */}
+            {/* xDAI Staked */}
             <div>
               <div className="font-semibold text-3xl text-center">14 ETH</div>
-              <div className="font-semibold text-base text-center">ETH Staked</div>
+              <div className="font-semibold text-base text-center">xDAI Staked</div>
             </div>
             {/* Leaderboard Position */}
             <div>
@@ -72,20 +72,20 @@ const Dashboard = () => {
               <div className="font-semibold text-3xl text-center">Coding</div>
               <div className="font-semibold text-base text-center">Top Category</div>
             </div>
-            {/* Challanges Authored */}
+            {/* challenges Authored */}
             <div>
               <div className="font-semibold text-3xl text-center">5</div>
-              <div className="font-semibold text-base text-center">Challanges Authored</div>
+              <div className="font-semibold text-base text-center">challenges Authored</div>
             </div>
-            {/* Earned from Authored Challanges */}
+            {/* Earned from Authored challenges */}
             <div>
               <div className="font-semibold text-3xl text-center">2.3 ETH</div>
-              <div className="font-semibold text-base text-center">Earned from Authored Challanges</div>
+              <div className="font-semibold text-base text-center">Earned from Authored challenges</div>
             </div>
-            {/* Challanges Initiated */}
+            {/* challenges Initiated */}
             <div>
               <div className="font-semibold text-3xl text-center">10</div>
-              <div className="font-semibold text-base text-center">Challanges Initiated</div>
+              <div className="font-semibold text-base text-center">challenges Initiated</div>
             </div>
           </div>
 

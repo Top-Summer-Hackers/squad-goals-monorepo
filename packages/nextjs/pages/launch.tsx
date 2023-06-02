@@ -170,14 +170,14 @@ const Launch = () => {
               {/* stake */}
               <div className="flex flex-col">
                 <label htmlFor="duration" className="mb-2">
-                  ETH Stake
+                  xDAI Stake
                 </label>
                 <input
                   onChange={handleChange}
                   type="number"
                   id="stake"
                   className="outline outline-1 rounded-full px-3 py-0.5"
-                  placeholder="Required deposit to participate, e.g. 0.05 ETH"
+                  placeholder="Required deposit to participate, e.g. 50 xDAI"
                 />
               </div>
               {/* max number of stakers */}
