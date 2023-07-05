@@ -81,6 +81,11 @@ const config: HardhatUserConfig = {
       url: `https://rpc.chiadochain.net`,
       accounts: [deployerPrivateKey],
     },
+    lineaTestnet: {
+      gasPrice: 3561000000000,
+      url: `https://linea-goerli.infura.io/v3/37a4291eb617498bad97e3379dd928ef`,
+      accounts: [deployerPrivateKey],
+    },
   },
   verify: {
     etherscan: {
